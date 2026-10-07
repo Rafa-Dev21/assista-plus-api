@@ -9,6 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -22,6 +26,16 @@ public class SerieDetalhesController {
     private SerieDetalhesService service;
 
     // Lista os detalhes das séries com paginação.
+    @Operation(
+            summary = "Listar detalhes das séries",
+            description = "Retorna uma lista paginada dos detalhes das séries cadastrados, utilizando HATEOAS."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Lista de detalhes retornada com sucesso."
+            )
+    })
     @GetMapping
     public PagedModel<EntityModel<SerieDetalhes>> listar(
             Pageable pageable,
@@ -33,16 +47,54 @@ public class SerieDetalhesController {
     }
 
     // Busca detalhes pelo país de origem.
+    @Operation(
+            summary = "Buscar detalhes por país de origem",
+            description = "Pesquisa os detalhes das séries pelo país de origem informado."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Busca realizada com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "O parâmetro país de origem não foi informado."
+            )
+    })
     @GetMapping("/buscar")
     public List<SerieDetalhes> buscarPorPais(
+            @Parameter(
+                    description = "País de origem utilizado na pesquisa",
+                    example = "Estados Unidos",
+                    required = true
+            )
             @RequestParam String paisOrigem) {
 
         return service.buscarPorPais(paisOrigem);
     }
 
     // Busca detalhes pelo ID.
+    @Operation(
+            summary = "Buscar detalhes por ID",
+            description = "Consulta os detalhes de uma série pelo identificador e retorna os dados com links HATEOAS."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Detalhes encontrados com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Detalhes não encontrados."
+            )
+    })
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<SerieDetalhes>> buscarPorId(
+            @Parameter(
+                    description = "ID dos detalhes que serão consultados",
+                    example = "1",
+                    required = true
+            )
             @PathVariable Long id) {
 
         return service.buscarPorId(id)
@@ -80,6 +132,20 @@ public class SerieDetalhesController {
     }
 
     // Cadastra os detalhes de uma série.
+    @Operation(
+            summary = "Cadastrar detalhes de série",
+            description = "Cadastra os detalhes de uma série após validar os dados enviados."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Detalhes cadastrados com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Os dados enviados são inválidos."
+            )
+    })
     @PostMapping
     public ResponseEntity<SerieDetalhes> cadastrar(
             @Valid @RequestBody SerieDetalhes detalhes) {
@@ -90,8 +156,31 @@ public class SerieDetalhesController {
     }
 
     // Atualiza os detalhes de uma série.
+    @Operation(
+            summary = "Atualizar detalhes de série",
+            description = "Atualiza os detalhes de uma série existente pelo ID informado."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Detalhes atualizados com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Os dados enviados são inválidos."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Detalhes não encontrados."
+            )
+    })
     @PutMapping("/{id}")
     public ResponseEntity<SerieDetalhes> atualizar(
+            @Parameter(
+                    description = "ID dos detalhes que serão atualizados",
+                    example = "1",
+                    required = true
+            )
             @PathVariable Long id,
             @Valid @RequestBody SerieDetalhes detalhes) {
 
@@ -101,8 +190,27 @@ public class SerieDetalhesController {
     }
 
     // Exclui os detalhes pelo ID.
+    @Operation(
+            summary = "Excluir detalhes de série",
+            description = "Exclui os detalhes de uma série pelo seu ID."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Detalhes excluídos com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Detalhes não encontrados."
+            )
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(
+            @Parameter(
+                    description = "ID dos detalhes que serão excluídos",
+                    example = "1",
+                    required = true
+            )
             @PathVariable Long id) {
 
         if (service.excluir(id)) {

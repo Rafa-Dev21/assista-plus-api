@@ -20,6 +20,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import com.assistaplus.assista_plus_api.diretor.DiretorController;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springdoc.core.annotations.ParameterObject;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 
 import java.util.List;
 
@@ -40,10 +47,21 @@ public class SerieController {
     //O Controller recebe a requisição GET e envia o Pageable
     //para o Service, que busca as séries de forma paginada.
 
+
+    @Operation(
+            summary = "Listar séries",
+            description = "Retorna uma lista paginada de séries cadastradas, utilizando HATEOAS."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Lista de séries retornada com sucesso."
+            )
+    })
     @GetMapping
     public PagedModel<EntityModel<Serie>> listar(
-            Pageable pageable,
-            PagedResourcesAssembler<Serie> assembler) {
+            @ParameterObject Pageable pageable,
+            @Parameter(hidden = true) PagedResourcesAssembler<Serie> assembler) {
 
         Page<Serie> pagina = service.listar(pageable);
 
@@ -51,13 +69,46 @@ public class SerieController {
     }
 
     // Busca séries pelo título informado na URL.
+    @Operation(
+            summary = "Buscar séries por título",
+            description = "Pesquisa séries utilizando parte ou todo o título informado."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Busca realizada com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "O parâmetro título não foi informado."
+            )
+    })
     @GetMapping("/buscar")
-    public List<Serie> buscarPorTitulo(@RequestParam String titulo) {
+    public List<Serie> buscarPorTitulo(@Parameter(
+            description = "Título ou parte do título da série",
+            example = "Stranger Things",
+            required = true
+    ) @RequestParam String titulo) {
         return service.buscarPorTitulo(titulo);
     }
 
     //Utilizei @PathVariable para receber o ID informado na URL e buscar a série correspondente no banco
     //usei o ResponseEntity para retornar 200 quando a série existe e 404 quando o ID não foi encontrado
+
+    @Operation(
+            summary = "Buscar série por ID",
+            description = "Consulta uma série pelo seu identificador e retorna seus dados com links HATEOAS."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Série encontrada com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Série não encontrada."
+            )
+    })
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<Serie>> buscarPorId(@PathVariable Long id) {
 
@@ -89,7 +140,20 @@ public class SerieController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-
+    @Operation(
+            summary = "Cadastrar série",
+            description = "Cadastra uma nova série após validar os dados enviados."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Série cadastrada com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Os dados enviados são inválidos."
+            )
+    })
     @PostMapping
     public Serie cadastrar(@Valid @RequestBody Serie serie) {
         return service.salvar(serie);
@@ -97,8 +161,32 @@ public class SerieController {
 
     //Utilizei o PUT para atualizar uma série existente. O ID vem pela URL e os novos dados são enviados no corpo
     //da requisição
+
+    @Operation(
+            summary = "Atualizar série",
+            description = "Atualiza os dados de uma série existente pelo ID informado."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Série atualizada com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Os dados enviados são inválidos."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Série não encontrada."
+            )
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Serie> atualizar(
+            @Parameter(
+                    description = "ID da série que será atualizada",
+                    example = "1",
+                    required = true
+            )
             @PathVariable Long id,
             @Valid @RequestBody Serie serie) {
 
@@ -108,8 +196,29 @@ public class SerieController {
     }
 
     // Quando a exclusão acontece, retorno 204 No Content. Caso a série não exista, retorno 404 Not Found
+
+    @Operation(
+            summary = "Excluir série",
+            description = "Exclui uma série cadastrada pelo seu ID."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Série excluída com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Série não encontrada."
+            )
+    })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+    public ResponseEntity<Void> excluir(
+            @Parameter(
+                    description = "ID da série que será excluída",
+                    example = "1",
+                    required = true
+            )
+            @PathVariable Long id) {
 
         if (service.excluir(id)) {
             return ResponseEntity.noContent().build();
@@ -120,8 +229,23 @@ public class SerieController {
 
     //  Adiciona um gênero a uma série existente.
     //O ID da série e o ID do gênero são informados pela URL.
+    @Operation(
+            summary = "Adicionar gênero à série",
+            description = "Associa um gênero existente a uma série existente."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Gênero associado à série com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Série ou gênero não encontrado."
+            )
+    })
     @PatchMapping("/{serieId}/generos/{generoId}")
     public ResponseEntity<Serie> adicionarGenero(
+            
             @PathVariable Long serieId,
             @PathVariable Long generoId) {
 

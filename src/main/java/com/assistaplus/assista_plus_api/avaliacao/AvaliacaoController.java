@@ -11,6 +11,10 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -24,6 +28,17 @@ public class AvaliacaoController {
     private AvaliacaoService service;
 
     // Lista todas as avaliações com paginação.
+
+    @Operation(
+            summary = "Listar avaliações",
+            description = "Retorna uma lista paginada de avaliações cadastradas, utilizando HATEOAS."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Lista de avaliações retornada com sucesso."
+            )
+    })
     @GetMapping
     public PagedModel<EntityModel<Avaliacao>> listar(
             Pageable pageable,
@@ -35,8 +50,26 @@ public class AvaliacaoController {
     }
 
     // Busca uma avaliação pelo ID.
+    @Operation(
+            summary = "Buscar avaliação por ID",
+            description = "Consulta uma avaliação pelo seu identificador e retorna seus dados com links HATEOAS para o usuário e a série relacionados."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Avaliação encontrada com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Avaliação não encontrada."
+            )
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<Avaliacao>> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<EntityModel<Avaliacao>> buscarPorId(  @Parameter(
+            description = "ID da avaliação que será consultada",
+            example = "1",
+            required = true
+    )@PathVariable Long id) {
 
         return service.buscarPorId(id)
                 .map(avaliacao -> {
@@ -82,12 +115,44 @@ public class AvaliacaoController {
     }
 
     // Busca avaliações pela nota.
+    @Operation(
+            summary = "Buscar avaliações por nota",
+            description = "Pesquisa avaliações pela nota informada."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Busca realizada com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "O parâmetro nota não foi informado ou possui valor inválido."
+            )
+    })
     @GetMapping("/buscar")
-    public List<Avaliacao> buscarPorNota(@RequestParam Integer nota) {
+    public List<Avaliacao> buscarPorNota(@Parameter(
+            description = "Nota utilizada para pesquisar avaliações",
+            example = "5",
+            required = true
+    )@RequestParam Integer nota) {
         return service.buscarPorNota(nota);
     }
 
     // Cadastra uma nova avaliação.
+    @Operation(
+            summary = "Cadastrar avaliação",
+            description = "Cadastra uma nova avaliação após validar os dados enviados."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Avaliação cadastrada com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Os dados enviados são inválidos."
+            )
+    })
     @PostMapping
     public ResponseEntity<Avaliacao> cadastrar(
             @Valid @RequestBody Avaliacao avaliacao) {
@@ -98,8 +163,31 @@ public class AvaliacaoController {
     }
 
     // Atualiza uma avaliação existente.
+    @Operation(
+            summary = "Atualizar avaliação",
+            description = "Atualiza os dados de uma avaliação existente pelo ID informado."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Avaliação atualizada com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Os dados enviados são inválidos."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Avaliação não encontrada."
+            )
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Avaliacao> atualizar(
+            @Parameter(
+                    description = "ID da avaliação que será atualizada",
+                    example = "1",
+                    required = true
+            )
             @PathVariable Long id,
             @Valid @RequestBody Avaliacao avaliacao) {
 
@@ -109,8 +197,26 @@ public class AvaliacaoController {
     }
 
     // Exclui uma avaliação pelo ID.
+    @Operation(
+            summary = "Excluir avaliação",
+            description = "Exclui uma avaliação cadastrada pelo seu ID."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Avaliação excluída com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Avaliação não encontrada."
+            )
+    })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+    public ResponseEntity<Void> excluir( @Parameter(
+            description = "ID da avaliação que será excluída",
+            example = "1",
+            required = true
+    )@PathVariable Long id) {
 
         if (service.excluir(id)) {
             return ResponseEntity.noContent().build();

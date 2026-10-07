@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -38,6 +42,16 @@ public class TemporadaController {
 
     // O Controller recebe a requisição GET e envia o Pageable
     // para o Service, permitindo listar as temporadas com paginação.
+    @Operation(
+            summary = "Listar temporadas",
+            description = "Retorna uma lista paginada de temporadas cadastradas, utilizando HATEOAS."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Lista de temporadas retornada com sucesso."
+            )
+    })
     @GetMapping
     public PagedModel<EntityModel<Temporada>> listar(
             Pageable pageable,
@@ -49,14 +63,47 @@ public class TemporadaController {
     }
 
     // Busca temporadas pelo número informado na URL.
+    @Operation(
+            summary = "Buscar temporadas por número",
+            description = "Pesquisa temporadas pelo número informado."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Busca realizada com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "O parâmetro número não foi informado."
+            )
+    })
     @GetMapping("/buscar")
-    public List<Temporada> buscarPorNumero(@RequestParam Integer numero) {
+    public List<Temporada> buscarPorNumero(@Parameter(
+            description = "Número da temporada que será pesquisada",
+            example = "1",
+            required = true
+    )@RequestParam Integer numero) {
         return service.buscarPorNumero(numero);
     }
 
     // Utilizamos @PathVariable para receber o ID informado na URL.
     // ResponseEntity permite retornar 200 quando a temporada existe
     // e 404 quando o ID não foi encontrado.
+
+    @Operation(
+            summary = "Buscar temporada por ID",
+            description = "Consulta uma temporada pelo seu identificador e retorna seus dados com links HATEOAS."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Temporada encontrada com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Temporada não encontrada."
+            )
+    })
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<Temporada>> buscarPorId(@PathVariable Long id) {
 
@@ -92,6 +139,22 @@ public class TemporadaController {
 
     // @PostMapping é utilizado para cadastrar uma nova temporada.
     // @Valid ativa as validações definidas na entidade.
+
+
+    @Operation(
+            summary = "Cadastrar temporada",
+            description = "Cadastra uma nova temporada após validar os dados enviados."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Temporada cadastrada com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Os dados enviados são inválidos."
+            )
+    })
     @PostMapping
     public Temporada cadastrar(@Valid @RequestBody Temporada temporada) {
         return service.salvar(temporada);
@@ -99,6 +162,25 @@ public class TemporadaController {
 
     // Utilizamos PUT para atualizar uma temporada existente.
     // O ID vem pela URL e os novos dados são enviados no corpo.
+
+    @Operation(
+            summary = "Atualizar temporada",
+            description = "Atualiza os dados de uma temporada existente pelo ID informado."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Temporada atualizada com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Os dados enviados são inválidos."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Temporada não encontrada."
+            )
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Temporada> atualizar(
             @PathVariable Long id,
@@ -111,6 +193,21 @@ public class TemporadaController {
 
     // Quando a exclusão acontece, retornamos 204 No Content.
     // Caso a temporada não exista, retornamos 404 Not Found.
+
+    @Operation(
+            summary = "Excluir temporada",
+            description = "Exclui uma temporada cadastrada pelo seu ID."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Temporada excluída com sucesso."
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Temporada não encontrada."
+            )
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
 
