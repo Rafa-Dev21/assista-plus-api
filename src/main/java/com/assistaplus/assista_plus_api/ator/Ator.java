@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,9 +22,11 @@ public class Ator {
     private Long id;
 
     @NotBlank
+    @Size(min = 2, max = 100)
     private String nome;
 
     @NotBlank
+    @Size(min = 2, max = 50)
     private String nacionalidade;
 
     @ManyToMany

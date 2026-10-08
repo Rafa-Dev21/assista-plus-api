@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.Size;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -22,6 +23,7 @@ public class Genero {
     private Long id;
 
     @NotBlank
+    @Size(min = 2, max = 50)
     private String nome;
 
     @JsonIgnore

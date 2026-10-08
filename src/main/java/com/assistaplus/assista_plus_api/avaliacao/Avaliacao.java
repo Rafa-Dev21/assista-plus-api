@@ -25,7 +25,7 @@ public class Avaliacao {
     @Max(5)
     private Integer nota;
 
-    @Size(max = 500)
+    @Size(min = 0, max = 500)
     private String comentario;
 
     @NotNull

@@ -23,6 +23,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springdoc.core.annotations.ParameterObject;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -55,8 +56,8 @@ public class AtorController {
     })
     @GetMapping
     public PagedModel<EntityModel<Ator>> listar(
-            Pageable pageable,
-            PagedResourcesAssembler<Ator> assembler) {
+            @ParameterObject Pageable pageable,
+            @Parameter(hidden = true) PagedResourcesAssembler<Ator> assembler) {
 
         Page<Ator> pagina = service.listar(pageable);
 

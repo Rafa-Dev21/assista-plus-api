@@ -8,6 +8,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class SerieDetalhes {
@@ -17,12 +20,16 @@ public class SerieDetalhes {
     private Long id;
 
     @NotBlank
+    @Size(min = 2, max = 50)
     private String idiomaOriginal;
 
     @NotBlank
+    @Size(min = 2, max = 100)
     private String paisOrigem;
 
     @NotNull
+    @Min(0)
+    @Max(18)
     private Integer classificacaoIndicativa;
 
     @OneToOne

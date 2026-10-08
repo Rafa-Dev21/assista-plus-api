@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,11 @@ public class Diretor {
     private Long id;
 
     @NotBlank
+    @Size(min = 2, max = 100)
     private String nome;
 
     @NotBlank
+    @Size(min = 2, max = 50)
     private String nacionalidade;
 
     @JsonIgnore

@@ -29,6 +29,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 import jakarta.persistence.JoinTable;
+import jakarta.validation.constraints.Size;
 
 
 // @Entity informa ao JPA/Hibernate que esta classe representa
@@ -44,11 +45,13 @@ public class Serie {
     // Armazena o título ou nome da série.
     // @NotBlank garante que o título seja preenchido.
     @NotBlank
+    @Size(min = 2, max = 150)
     private String titulo;
 
     // Armazena a descrição ou sinopse da série.
     // @NotBlank garante que a descrição seja preenchida.
     @NotBlank
+    @Size(min = 10, max = 500)
     private String descricao;
 
     // Armazena o ano de lançamento da série.

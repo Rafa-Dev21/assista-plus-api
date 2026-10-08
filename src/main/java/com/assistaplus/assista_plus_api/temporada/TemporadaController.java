@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springdoc.core.annotations.ParameterObject;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -54,8 +55,8 @@ public class TemporadaController {
     })
     @GetMapping
     public PagedModel<EntityModel<Temporada>> listar(
-            Pageable pageable,
-            PagedResourcesAssembler<Temporada> assembler) {
+            @ParameterObject Pageable pageable,
+            @Parameter(hidden = true) PagedResourcesAssembler<Temporada> assembler) {
 
         Page<Temporada> pagina = service.listar(pageable);
 

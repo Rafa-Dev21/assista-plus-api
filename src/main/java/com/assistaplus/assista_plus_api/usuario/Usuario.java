@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +22,12 @@ public class Usuario {
     private Long id;
 
     @NotBlank
+    @Size(min = 2, max = 100)
     private String nome;
 
     @NotBlank
     @Email
+    @Size(min = 5, max = 150)
     private String email;
 
     // Impede o loop JSON:
@@ -65,4 +68,3 @@ public class Usuario {
         this.avaliacoes = avaliacoes;
     }
 }
-

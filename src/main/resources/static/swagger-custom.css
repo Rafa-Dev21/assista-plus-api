@@ -1,0 +1,9 @@
+/* TESTE - confirmar aplicação do CSS */
+body,
+.swagger-ui {
+    background: #000000 !important;
+}
+
+.swagger-ui .topbar {
+    background: #ff0000 !important;
+}

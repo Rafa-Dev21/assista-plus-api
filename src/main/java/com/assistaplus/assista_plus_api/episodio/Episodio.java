@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Episodio {
@@ -23,6 +24,7 @@ public class Episodio {
     private Integer numero;
 
     @NotBlank
+    @Size(min = 2, max = 150)
     private String titulo;
 
     @NotNull

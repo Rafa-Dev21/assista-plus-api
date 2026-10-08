@@ -23,9 +23,9 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springdoc.core.annotations.ParameterObject;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springdoc.core.annotations.ParameterObject;
 
 
 import java.util.List;

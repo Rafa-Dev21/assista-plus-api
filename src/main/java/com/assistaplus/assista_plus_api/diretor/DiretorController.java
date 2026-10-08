@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springdoc.core.annotations.ParameterObject;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -58,8 +59,8 @@ public class DiretorController {
     })
     @GetMapping
     public PagedModel<EntityModel<Diretor>> listar(
-            Pageable pageable,
-            PagedResourcesAssembler<Diretor> assembler) {
+            @ParameterObject Pageable pageable,
+            @Parameter(hidden = true) PagedResourcesAssembler<Diretor> assembler) {
 
         Page<Diretor> pagina = service.listar(pageable);
 
