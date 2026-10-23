@@ -1,0 +1,14 @@
+$kind: http-request
+description: ""
+url: http://localhost:8080/diretores
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"nome\": \"Matt Duffer\",\r
+
+    \  \"nacionalidade\": \"Americano\"\r
+
+    }"
+order: 2000
