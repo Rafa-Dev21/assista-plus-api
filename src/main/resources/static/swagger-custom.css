@@ -1,0 +1,214 @@
+/* ========================================================
+   TEMA ASSISTA+ "CINEMA EDITION" COM ANIMAÇÕES AVANÇADAS
+   ======================================================== */
+
+/* --- 1. Imagem de Fundo com Pulso Sutil --- */
+body, .swagger-ui {
+    background-image: linear-gradient(rgba(12, 12, 12, 0.92), rgba(12, 12, 12, 0.92)), url('fundos.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    color: #e0e0e0 !important;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    animation: backgroundPulse 15s ease-in-out infinite alternate;
+}
+
+@keyframes backgroundPulse {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.05); }
+}
+
+/* --- 2. Barra Superior Estilo Glassmorphism Neon --- */
+.swagger-ui .topbar {
+    background: linear-gradient(135deg, rgba(15, 15, 15, 0.95), rgba(25, 25, 25, 0.95)) !important;
+    backdrop-filter: blur(16px);
+    border-bottom: 3px solid #e50914;
+    box-shadow: 0 4px 30px rgba(229, 9, 20, 0.25);
+}
+
+.swagger-ui .topbar .topbar-wrapper img {
+    display: none !important;
+}
+
+/* Logotipo Animado com Brilho Pulsante */
+.swagger-ui .topbar .topbar-wrapper .link::after {
+    content: "Assista+" !important;
+    color: #e50914 !important;
+    font-weight: 900 !important;
+    font-size: 28px !important;
+    letter-spacing: -1px;
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    text-transform: uppercase;
+    text-shadow: 0 0 15px rgba(229, 9, 20, 0.7), 0 0 30px rgba(229, 9, 20, 0.4);
+    animation: logoGlow 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlow {
+    0% { text-shadow: 0 0 10px rgba(229, 9, 20, 0.5); }
+    100% { text-shadow: 0 0 20px rgba(229, 9, 20, 0.9), 0 0 35px rgba(229, 9, 20, 0.6); }
+}
+
+.swagger-ui .topbar .topbar-wrapper .link {
+    text-decoration: none !important;
+}
+
+/* --- 3. Inputs e Botões com Efeito Neon --- */
+.swagger-ui .topbar .download-url-wrapper input[type=text] {
+    border: 1px solid #333333 !important;
+    background-color: rgba(20, 20, 20, 0.9) !important;
+    color: #ffffff !important;
+    border-radius: 6px 0 0 6px !important;
+    transition: all 0.3s ease;
+}
+
+.swagger-ui .topbar .download-url-wrapper input[type=text]:focus {
+    border-color: #e50914 !important;
+    box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
+}
+
+.swagger-ui .topbar .download-url-wrapper .download-url-button {
+    background: linear-gradient(135deg, #e50914, #b80710) !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    border: none !important;
+    border-radius: 0 6px 6px 0 !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+}
+
+.swagger-ui .topbar .download-url-wrapper .download-url-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(229, 9, 20, 0.7);
+    background: linear-gradient(135deg, #ff1e2a, #e50914) !important;
+}
+
+/* --- 4. Links e Elementos Interativos em Vermelho --- */
+.swagger-ui a {
+    color: #e50914 !important;
+    transition: all 0.2s ease;
+}
+
+.swagger-ui a:hover {
+    color: #ff333d !important;
+    text-shadow: 0 0 8px rgba(229, 9, 20, 0.6);
+}
+
+.swagger-ui .opblock-tag {
+    color: #ffffff !important;
+    border-bottom: 2px solid rgba(229, 9, 20, 0.4) !important;
+    transition: all 0.3s ease;
+}
+
+.swagger-ui .opblock-tag:hover {
+    color: #e50914 !important;
+    border-bottom-color: #e50914 !important;
+    padding-left: 6px;
+}
+
+.swagger-ui .model-box .model-toggle::after {
+    filter: invert(15%) sepia(95%) saturate(6932%) hue-rotate(354deg) brightness(93%) contrast(100%) !important;
+}
+
+/* --- 5. Animações de Entrada em Cascata --- */
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.swagger-ui .info {
+    animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    background: rgba(20, 20, 20, 0.85) !important;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    padding: 24px;
+}
+
+.swagger-ui .scheme-container {
+    animation: slideInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    background: rgba(20, 20, 20, 0.85) !important;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.swagger-ui .opblock-tag-section {
+    animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --- 6. Efeito Cinema Card Premium nos Endpoints --- */
+.swagger-ui .opblock {
+    background-color: rgba(24, 24, 24, 0.85) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    margin-bottom: 15px !important;
+    overflow: hidden;
+}
+
+/* Borda lateral vermelha brilhante ao expandir o endpoint */
+.swagger-ui .opblock.is-open {
+    border-left: 4px solid #e50914 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(229, 9, 20, 0.25) !important;
+}
+
+.swagger-ui .opblock:hover {
+    transform: translateY(-3px) scale(1.005);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.6), 0 0 20px rgba(229, 9, 20, 0.2) !important;
+    border-color: rgba(229, 9, 20, 0.4) !important;
+}
+
+/* Efeito de zoom suave no método HTTP (GET, POST, etc.) */
+.swagger-ui .opblock .opblock-summary-method {
+    border-radius: 6px !important;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.swagger-ui .opblock:hover .opblock-summary-method {
+    transform: scale(1.06);
+    filter: brightness(1.15);
+}
+
+/* --- 7. Painéis de Resposta, Tabelas e Modais Estilizados --- */
+.swagger-ui .model-box,
+.swagger-ui section.models,
+.swagger-ui .responses-table,
+.swagger-ui .parameters-table,
+.swagger-ui .execute-wrapper {
+    background-color: rgba(18, 18, 18, 0.9) !important;
+    color: #e0e0e0 !important;
+}
+
+.swagger-ui table tbody tr td,
+.swagger-ui table thead tr th {
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Botão "Execute" estilizado no padrão Assista+ */
+.swagger-ui .btn.execute {
+    background-color: #e50914 !important;
+    border-color: #e50914 !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+    transition: all 0.2s ease;
+}
+
+.swagger-ui .btn.execute:hover {
+    background-color: #ff1e2a !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(229, 9, 20, 0.7);
+}
+
+/* Textos gerais com contraste perfeito */
+.swagger-ui .info .title,
+.swagger-ui .info p,
+.swagger-ui .opblock .opblock-summary-path,
+.swagger-ui .opblock .opblock-summary-description,
+.swagger-ui .tab li {
+    color: #ffffff !important;
+}
